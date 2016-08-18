@@ -42,15 +42,17 @@ def post_call (url, in_data, out_data):
     #data for sending to the server
     payload = {'command' : in_data, 'result' : out_data }
     #call POST-inquiry
-    push = requests.post (url, data = payload) 
+    push = requests.post (url, data = payload)
+    return push.status_code
 
-
+#--------main program code-----------
 data = get_call (URL, param)
+
 if data == '':
-    to_log = '! No command from server !\n'
-    logger (to_log)
+    msg = '! No command from server !\n'
 else:
-    com_res = create_proc (data)
-    to_log = command_check (com_res)
-    logger (to_log)
-    post_call (URL, data, to_log)
+    cmd_res = create_proc (data)
+    msg = command_check (cmd_res)
+
+logger (msg)
+post_call (URL, data, msg)
